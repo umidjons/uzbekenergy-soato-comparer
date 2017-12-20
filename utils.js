@@ -39,7 +39,7 @@ function parseFile(inFile, outFile) {
         });
 
         reader.on('close', () => {
-            const json = JSON.stringify(entries);
+            const json = JSON.stringify(entries, null, 4);
             fs.writeFile(outFile, json, 'utf8', () => {
                 resolve(entries);
             });
