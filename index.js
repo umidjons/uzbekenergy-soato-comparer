@@ -26,8 +26,8 @@ async function main() {
     console.log('Count of existing entries by regions:');
     console.log(table.toString());
 
-    const deletedEntries = utils.diff(existings, entries);
-    const addedEntries = utils.diff(entries, existings);
+    const deletedEntries = utils.sort(utils.diff(existings, entries));
+    const addedEntries = utils.sort(utils.diff(entries, existings));
 
     table = new Table({head: ['#', 'Entry']});
     idx = 1;

@@ -39,7 +39,7 @@ function parseFile(inFile, outFile) {
         });
 
         reader.on('close', () => {
-            const json = JSON.stringify(entries, null, 4);
+            const json = JSON.stringify(sort(entries), null, 4);
             fs.writeFile(outFile, json, 'utf8', () => {
                 resolve(entries);
             });
@@ -81,4 +81,21 @@ function diffName(left, right) {
     return result;
 }
 
-module.exports = {countBy, parseLine, parseFile, diff, diffName, saveToFile};
+function sort(entries) {
+    const re = /^\d+\s*-\s*(.*)$/i;
+    return entries.sort((a, b) => {
+        const aTitle = `${a.filter}-${re.exec(a.title.ru)[1].toLocaleLowerCase()}`;
+        const bTitle = `${b.filter}-${re.exec(b.title.ru)[1].toLocaleLowerCase()}`;
+        if (aTitle < bTitle) {
+            return -1;
+        }
+
+        if (aTitle > bTitle) {
+            return 1;
+        }
+
+        return 0;
+    });
+}
+
+module.exports = {countBy, parseLine, parseFile, diff, diffName, saveToFile, sort};
